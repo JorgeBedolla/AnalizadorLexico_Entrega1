@@ -1,0 +1,20 @@
+clase nombreClase{
+fun miFuncion(){
+var x = 5;
+var a = 13.456;
+var b = 2E15;
+
+var c = x + a - z;
+a = y / z;
+
+para(i = 0; i < 15; x++){
+imprimir("Hola");
+}
+
+si(a >= x){
+var cadena = "Mayor";
+}o{
+a = 0;
+}
+}
+}
