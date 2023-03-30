@@ -1,3 +1,5 @@
+//Programa de ejemplo
+
 clase nombreClase{
 fun miFuncion(){
 var x = 5;
@@ -15,6 +17,13 @@ si(a >= x){
 var cadena = "Mayor";
 }o{
 a = 0;
+/* 
+Mi
+Comentario
+de 
+varias
+Lineas
+ */
 }
 }
 }
