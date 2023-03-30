@@ -120,7 +120,7 @@ public class Scanner {
                     break;
                 case 4:
                     //CREAMOS TOKEN DE IDENTIFICADOR
-                    tokens.add(new Token(TipoToken.IDENTIFICADOR, buffer, toLiteral(buffer), linea));
+                    tokens.add(new Token(TipoToken.IDENTIFICADOR, buffer, null, linea));
                     buffer = "";
                     estado = 0;
                     i = i - 3;
@@ -150,7 +150,7 @@ public class Scanner {
                     break;
                 case 6:
                     //CREAMOS NUMERO ENTERO
-                    tokens.add(new Token(TipoToken.NUM, buffer, toLiteral(buffer), linea));
+                    tokens.add(new Token(TipoToken.NUM, buffer, Double.parseDouble(buffer), linea));
                     buffer = "";
                     estado = 0;
                     i = i - 2;
@@ -183,7 +183,7 @@ public class Scanner {
                     break;
                 case 9:
                     //CREAMOS UN NUMERO FLOTANTE
-                    tokens.add(new Token(TipoToken.NUM, buffer, toLiteral(buffer), linea));
+                    tokens.add(new Token(TipoToken.NUM, buffer, Double.parseDouble(buffer), linea));
                     buffer = "";
                     estado = 0;
                     //i = i - 4;
@@ -226,7 +226,7 @@ public class Scanner {
                     break;
                 case 13:
                     //CREAMOS UN NUMERO EXPONENCIAL
-                    tokens.add(new Token(TipoToken.NUM, buffer, toLiteral(buffer), linea));
+                    tokens.add(new Token(TipoToken.NUM, buffer, Double.parseDouble(buffer), linea));
                     buffer = "";
                     estado = 0;
                     i = ultimaPos - 1;
@@ -240,7 +240,7 @@ public class Scanner {
                     }
                     if(cadena[i] == ' '){
                         estado = 14;
-                        buffer = buffer + '_';
+                        buffer = buffer + ' ';
                         break;
                     }
                     
@@ -252,7 +252,7 @@ public class Scanner {
                     break;
                 case 15:
                     //CREAMOS UNA CADENA
-                    tokens.add(new Token(TipoToken.CADENA, buffer, toLiteral(buffer.replaceAll("\"", "")),linea));
+                    tokens.add(new Token(TipoToken.CADENA, buffer, buffer.replaceAll("\"", ""),linea));
                     buffer = "";
                     estado = 0;
                     break;
@@ -279,8 +279,21 @@ public class Scanner {
                     if(cadena[i] == '>'){
                        buffer = buffer + cadena[i]; 
                        estado = 26;
-                       break;
-                    }else{
+                       break;}
+                    
+                    if(cadena[i] == '/' && cadena[i+1] == '/'){
+                        estado = 30;
+                        i++;
+                        break;
+                    }
+                    
+                    if(cadena[i] == '/' && cadena[i+1] == '*'){
+                        estado = 31;
+                        i++;
+                        break;
+                    }
+                    
+                    else{
                         estado = 29;
                         i--;
                     }
@@ -397,6 +410,30 @@ public class Scanner {
                     }
                     
                     break;
+                case 30:
+                    if(cadena[i] != '\n'){
+                        estado = 30;
+                        break;
+                    }else{
+                        estado = 0;
+                        break;
+                    }
+                case 31:
+                    if(cadena[i] == '*'){
+                        estado = 32;
+                        break;
+                    }else{
+                        estado = 31;
+                        break;
+                    }
+                case 32:
+                    if(cadena[i] == '/'){
+                        estado = 0;
+                        break;
+                    }else{
+                        mensajeError = "formato de comentario invalido";
+                        break;
+                    }
                 default:
                     mensajeError = "Ha ocurrido un error";
                     break;
@@ -421,11 +458,6 @@ public class Scanner {
     
     public static boolean esLetra(char c){
         return Character.isLetter(c);
-    }
-    
-    public static Object toLiteral(String s){
-        Object  ob = s;
-        return ob;
     }
     
     public static Token buscarSigno(char c,int linea){
