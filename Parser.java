@@ -4,7 +4,7 @@ import java.util.List;
 public class Parser {
 
     private final List<Token> tokens;
-
+    
     private final Token identificador = new Token(TipoToken.IDENTIFICADOR, "");
 
     //==================================================================
@@ -90,10 +90,11 @@ public class Parser {
        
 
         if(!hayErrores && !preanalisis.equals(finCadena)){
-            System.out.println("Error en la linea " + posicion + ". No se esperaba el token " + preanalisis.tipo);
+            System.out.println("ERROR PARSER: la linea " + posicion + ". No se esperaba el token " + preanalisis.tipo);
+            hayErrores = true;
         }
         else if(!hayErrores && preanalisis.equals(finCadena)){
-            System.out.println("SENTENCIA VALIDA");
+            //System.out.println("SENTENCIA VALIDA");
         }
 
         /*if(!preanalisis.equals(finCadena)){
@@ -141,7 +142,7 @@ public class Parser {
             coincidir(llaveDer);
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + ". Se esperaba un class");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + ". Se esperaba un class");
         }
     }
 
@@ -164,7 +165,7 @@ public class Parser {
         }
         else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + ". Se esperaba un fun");
+            System.out.println("ERROR PARSER: en la posicion " + posicion + ". Se esperaba un fun");
         }
     }
 
@@ -178,7 +179,7 @@ public class Parser {
             coincidir(puntoComa);
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + ". Se esperaba un fun");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + ". Se esperaba un fun");
         }
     }
 
@@ -232,7 +233,7 @@ public class Parser {
             STATEMENT();
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " FORMATO DE SENTENCIA FOR INVALIDO");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " FORMATO DE SENTENCIA FOR INVALIDO");
         }
     }
     
@@ -282,7 +283,7 @@ public class Parser {
 
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato if invalido");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " formato if invalido");
         }
     }
 
@@ -304,7 +305,7 @@ public class Parser {
             coincidir(puntoComa);
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato print invalido");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " formato print invalido");
         }
     }
 
@@ -317,7 +318,7 @@ public class Parser {
             coincidir(puntoComa);
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato return invalido");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " formato return invalido");
         }
     }
 
@@ -340,7 +341,7 @@ public class Parser {
             STATEMENT();
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato while invalido");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " formato while invalido");
         }
     }
 
@@ -353,7 +354,7 @@ public class Parser {
             coincidir(llaveDer);
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " se esperaba un bloque");
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " se esperaba un bloque");
         }
     }
 
@@ -583,7 +584,7 @@ public class Parser {
             return;
         */}else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato invalido, se esperaba una expresion");   
+            System.out.println("PARSER ERROR en la posicion " + posicion + " formato invalido, se esperaba una expresion");   
         }
     }
 
@@ -599,7 +600,7 @@ public class Parser {
             BLOCK();
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato invalido, se esperaba un identificador");   
+            System.out.println("PARSER ERROR:en la posicion " + posicion + " formato invalido, se esperaba un identificador");   
         }
     }
 
@@ -628,7 +629,7 @@ public class Parser {
             PARAMETERS_2();
         }else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + " formato invalido, se esperaba un identificador");    
+            System.out.println("PARSER ERROR: en la posicion " + posicion + " formato invalido, se esperaba un identificador");    
         }
     }
 
@@ -676,9 +677,14 @@ public class Parser {
         }
         else{
             hayErrores = true;
-            System.out.println("Error en la posicion " + posicion + ". Se esperaba un  " + t.tipo);
-
+            System.out.println("PARSER ERROR: en la posicion " + posicion + ". Se esperaba un  " + t.tipo);
+            //System.exit(1);
         }
+    }
+
+    public Boolean getErrores(){
+        if(hayErrores) return true;
+            return false;
     }
 
 }

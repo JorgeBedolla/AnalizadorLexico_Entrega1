@@ -231,7 +231,7 @@ public class Scanner {
                     break;
                     
                 case 14:
-                    if(esLetra(cadena[i]) || esDigito(cadena[i])){
+                    if(esLetra(cadena[i]) || esDigito(cadena[i]) || esSimbolo(cadena[i])){
                         estado = 14;
                         buffer = buffer + cadena[i];
                         break;
@@ -247,7 +247,7 @@ public class Scanner {
                         estado = 15;
                         buffer = buffer + cadena[i];
                     }else{
-                        mensajeError = "ERROR: La cadena debe cerrarse";
+                        mensajeError = "ERROR SCANNER: La cadena debe cerrarse";
                     }
                     
                     break;
@@ -508,6 +508,22 @@ public class Scanner {
         }
         
         return t;
+    }
+
+    public static boolean esSimbolo(char c){
+        switch(c){
+            case '.':
+            case ';':
+            case ':':
+            case '+':
+            case '-':
+            case '/':
+            case '*':
+            case ',':
+            return true;
+            default:
+            return false;
+        }
     }
     
     public boolean comprobarErrores(){

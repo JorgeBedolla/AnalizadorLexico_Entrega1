@@ -1,12 +1,12 @@
 import java.io.BufferedReader;
-import java.io.FileReader;
+//import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
+//VERSION FINAL 30/06/2023
 //Alumno: Garcia Bedolla Jorge Omar
 //Grupo: 3CV13
 
@@ -57,6 +57,8 @@ public class Principal {
     private static void ejecutar(String source){
         Scanner scanner = new Scanner(source);
         scanner.setLinea(contadorLinea);
+
+        //Escaneamos Tokens
         List<Token> tokens = scanner.scanTokens();
        
         if(scanner.comprobarErrores()){
@@ -65,13 +67,20 @@ public class Principal {
         }
 
       
-        
-        /*for(Token token : tokens){
-            System.out.println(token);
-        }*/
-
+        //Analisis Sintactico
         Parser parser = new Parser(tokens);
         parser.parse();
+
+        if(parser.getErrores()) return;
+
+        GeneradorPostfija gpf = new GeneradorPostfija(tokens);
+        List<Token> postfija = gpf.convertir();
+
+
+        GeneradorAST gast = new GeneradorAST(postfija);
+        Arbol programa = gast.generarAST();
+        programa.recorrer(); 
+
     }
     /*
     El método error se puede usar desde las distintas clases
